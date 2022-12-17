@@ -15,8 +15,10 @@ public class Auto extends LinearOpMode {
     DcMotor backLm2;
     DcMotor backRm2;
     CRServo clawS2;
-    DcMotor clawM2;
-
+    /*DcMotor clawML2;
+    DcMotor clawMR2;
+     */
+    DcMotor clawMA2;
 
     @Override
     public void runOpMode() { // runs at the beginning, init is short of "initialize"
@@ -26,7 +28,11 @@ public class Auto extends LinearOpMode {
         backLm2 = hardwareMap.get(DcMotor.class, "backL");
         backRm2 = hardwareMap.get(DcMotor.class, "backR");
         clawS2 = hardwareMap.get(CRServo.class,"clawS");
-        clawM2 = hardwareMap.get(DcMotor.class,"clawM");
+        /*
+        clawML2 = hardwareMap.get(DcMotor.class,"clawML");
+        clawMR2 = hardwareMap.get(DcMotor.class,"clawMR");
+         */
+        clawMA2 = hardwareMap.get(DcMotor.class,"clawMA");
 
         frontRm2.setDirection(DcMotorSimple.Direction.REVERSE);
         backLm2.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -43,7 +49,6 @@ public class Auto extends LinearOpMode {
         backRm2.setPower(power);
         sleep(time * 100);
     }
-
     public void GoBack(long time, double power) {
         frontLm2.setPower(-power);
         frontRm2.setPower(-power);
@@ -51,7 +56,6 @@ public class Auto extends LinearOpMode {
         backRm2.setPower(-power);
         sleep(time * 100);
     }
-
     public void GoLeft(long time, double power) {
         frontLm2.setPower(-power);
         frontRm2.setPower(power);
@@ -59,7 +63,6 @@ public class Auto extends LinearOpMode {
         backRm2.setPower(-power);
         sleep(time * 100);
     }
-
     public void GoRight(long time, double power) {
         frontLm2.setPower(power);
         frontRm2.setPower(-power);
@@ -67,13 +70,35 @@ public class Auto extends LinearOpMode {
         backRm2.setPower(power);
         sleep(time * 100);
     }
+    public void TopLeft(long time, double power) {
+        frontRm2.setPower(power);
+        backLm2.setPower(power);
+        sleep(time * 100);
+    }
+    public void BottomLeft(long time, double power) {
+        frontRm2.setPower(-power);
+        backLm2.setPower(-power);
+        sleep(time * 100);
+    }
+    public void TopRight(long time, double power) {
+        frontLm2.setPower(power);
+        backRm2.setPower(power);
+        sleep(time * 100);
+    }
+    public void BottomRight(long time, double power) {
+        frontLm2.setPower(-power);
+        backRm2.setPower(-power);
+        sleep(time * 100);
+    }
     public void StopNow(long time) {
         frontLm2.setPower(0);
         frontRm2.setPower(0);
         backLm2.setPower(0);
         backRm2.setPower(0);
-        clawS2.setPower(0);
-        clawM2.setPower(0);
+        /*clawS2.setPower(0);
+        clawML2.setPower(0);
+        clawMR2.setPower(0);
+        clawMA2.setPower(0);*/
         sleep(time * 100);
     }
     public void TurnLeft(long time, double power) {
@@ -98,12 +123,24 @@ public class Auto extends LinearOpMode {
         clawS2.setPower(-power);
         sleep(time * 100);
     }
-    public void ClawUp(long time, double power) {
-        clawM2.setPower(power);
+    /*
+    public void LinearUp(long time, double power) {
+        clawML2.setPower(power);
+        clawMR2.setPower(power);
         sleep(time * 100);
     }
-    public void ClawDown(long time, double power) {
-        clawM2.setPower(-power);
+    public void LinearDown(long time, double power) {
+        clawML2.setPower(-power);
+        clawMR2.setPower(-power);
+        sleep(time * 100);
+    }
+    */
+    public void ArmUp(long time, double power) {
+        clawMA2.setPower(power);
+        sleep(time * 100);
+    }
+    public void ArmDown(long time, double power) {
+        clawMA2.setPower(-power);
         sleep(time * 100);
     }
 }

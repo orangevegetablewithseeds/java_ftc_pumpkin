@@ -4,7 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
+/* This code can drive our robot, for our robot our front wheels are bevel geared and the back is direct connect
+Test out if it works with yours but you can change the pos or neg signs to change it so it can work for you.
+ */
 @TeleOp (name ="Don't Run 1")
 public class Wheels extends OpMode {
 
@@ -34,7 +36,7 @@ public class Wheels extends OpMode {
         double l1 = Math.pow(gamepad1.right_stick_x, 3);
         double denominator = Math.max(Math.abs(x1) + Math.abs(l1) + Math.abs(y1), 1.0);
 
-        if (gamepad1.right_bumper == true) {
+        if (gamepad1.right_bumper) {
             frontLm1.setPower(((y1 + x1 + l1) / denominator)*.25);
             frontRm1.setPower(((y1 - x1 - l1) / denominator)*.25);
             backLm1.setPower(((y1 - x1 + l1) / denominator)*.25);
