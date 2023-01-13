@@ -20,17 +20,17 @@ public class Drive extends OpMode {
     DcMotor frontRm1;
     DcMotor backLm1;
     DcMotor backRm1;
-    Servo clawS1;
+    //  CRServo clawS1;
     /*DcMotor clawML1;
     DcMotor clawMR1;
      */
-    DcMotor clawMA1;
+    // DcMotor clawMA1;
     double ground = 0;
 
     double scaleFactor = 1;
 
-    double low = 10 *scaleFactor;
-    double middle = 30* scaleFactor;
+    double low = 10 * scaleFactor;
+    double middle = 30 * scaleFactor;
     double high = 50 * scaleFactor;
     double armH = 0;
 
@@ -41,21 +41,22 @@ public class Drive extends OpMode {
         frontRm1 = hardwareMap.get(DcMotor.class, "frontR");
         backLm1 = hardwareMap.get(DcMotor.class, "backL");
         backRm1 = hardwareMap.get(DcMotor.class, "backR");
-        clawS1 = hardwareMap.get(Servo.class, "clawS");
+        //clawS1 = hardwareMap.get(CRServo.class, "clawS");
         //below is the linear slide code
         /*clawML1 = hardwareMap.get(DcMotor.class, "clawML");
         clawMR1 = hardwareMap.get(DcMotor.class, "clawMR");
         */
-        clawMA1 = hardwareMap.get(DcMotor.class,"clawMA");
-        frontRm1.setDirection(DcMotorSimple.Direction.REVERSE);
+        //    clawMA1 = hardwareMap.get(DcMotor.class,"clawMA");
+        frontLm1.setDirection(DcMotorSimple.Direction.REVERSE);
         backLm1.setDirection(DcMotorSimple.Direction.REVERSE);
-        clawMA1.setDirection(DcMotorSimple.Direction.REVERSE);
+        //    clawMA1.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        clawMA1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        clawMA1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //     clawMA1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //  clawMA1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //        clawMA1.setTargetPosition(0);
 //        clawMA1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
+
     @Override
     public void loop() {
 
@@ -76,7 +77,7 @@ public class Drive extends OpMode {
             backRm1.setPower((y1 + x1 - l1) / denominator * .8);
         }
 
-        if (gamepad2.a || gamepad2.b || gamepad2.x || gamepad2.y) {
+/*        if (gamepad2.a || gamepad2.b || gamepad2.x || gamepad2.y) {
             if (gamepad2.a)
                 armH = ground;
             else if (gamepad2.b)
@@ -96,17 +97,22 @@ public class Drive extends OpMode {
                 telemetry.addData("armH", armH);
                 telemetry.addData("current position", clawMA1.getCurrentPosition());
                 telemetry.update();
-*/            }
+*/   /*         }
             clawMA1.setPower(0);
-        if (gamepad2.left_bumper) {
-            clawS1.setPosition(0); // test this
+        if (gamepad2.left_bumper) { // close claw (try this)
+            clawS1.setPower(-0.5); // test this
+        }
+        else if (gamepad2.right_bumper) { // open claw
+            clawS1.setPower(0.5); // test these values
+        }
+        else {
+            clawS1.setPower(0);
         }
 
-        if (gamepad2.right_bumper) {
-            clawS1.setPosition(0.5); // test these values
-        }
-        }
 
+
+        }
+*/
         // below is old arm code
 /*
         if (gamepad2.left_trigger >  0 && gamepad2.right_trigger > 0) {
@@ -151,7 +157,7 @@ public class Drive extends OpMode {
         }*/
 
     }
-
+}
 
 
 

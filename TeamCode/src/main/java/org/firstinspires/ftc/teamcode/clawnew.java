@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
-@TeleOp (name = "tes claw")
+// This was old arm swing code
+@TeleOp (name = "Don't Run 4")
 public class clawnew extends OpMode {
     DcMotor clawM3;
     @Override

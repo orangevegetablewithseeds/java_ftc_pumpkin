@@ -24,6 +24,7 @@ public class Go_Left extends LinearOpMode {
 
         frontRm2.setDirection(DcMotorSimple.Direction.REVERSE);
         backLm2.setDirection(DcMotorSimple.Direction.REVERSE);
+        waitForStart();
         GoLeft(17,.5);
         StopNow(1);
         terminateOpModeNow();
