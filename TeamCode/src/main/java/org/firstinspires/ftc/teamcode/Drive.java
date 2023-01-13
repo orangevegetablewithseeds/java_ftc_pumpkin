@@ -20,7 +20,12 @@ public class Drive extends OpMode {
     DcMotor frontRm1;
     DcMotor backLm1;
     DcMotor backRm1;
-    //  CRServo clawS1;
+    DcMotor leftslidem1;
+    DcMotor rightslidem1;
+    Servo clawS1;
+    Servo leftarmS1;
+    Servo rightarmS1;
+
     /*DcMotor clawML1;
     DcMotor clawMR1;
      */
@@ -41,7 +46,7 @@ public class Drive extends OpMode {
         frontRm1 = hardwareMap.get(DcMotor.class, "frontR");
         backLm1 = hardwareMap.get(DcMotor.class, "backL");
         backRm1 = hardwareMap.get(DcMotor.class, "backR");
-        //clawS1 = hardwareMap.get(CRServo.class, "clawS");
+        clawS1 = hardwareMap.get(Servo.class, "clawS");
         //below is the linear slide code
         /*clawML1 = hardwareMap.get(DcMotor.class, "clawML");
         clawMR1 = hardwareMap.get(DcMotor.class, "clawMR");
@@ -65,7 +70,7 @@ public class Drive extends OpMode {
         double l1 = Math.pow(gamepad1.right_stick_x, 3);
         double denominator = Math.max(Math.abs(x1) + Math.abs(l1) + Math.abs(y1), 1.0);
 
-        if (gamepad1.right_bumper) {
+        if (gamepad1.left_trigger == 1) {
             frontLm1.setPower(((y1 + x1 + l1) / denominator) * .25);
             frontRm1.setPower(((y1 - x1 - l1) / denominator) * .25);
             backLm1.setPower(((y1 - x1 + l1) / denominator) * .25);
@@ -77,6 +82,25 @@ public class Drive extends OpMode {
             backRm1.setPower((y1 + x1 - l1) / denominator * .8);
         }
 
+        telemetry.addData("servo position", clawS1.getPosition());
+
+        if (gamepad2.left_bumper) {
+            clawS1.setPosition(0.8);
+            telemetry.addData("Bumper closed", true);
+            telemetry.update();
+
+        }
+        if (gamepad2.right_bumper) {
+            clawS1.setPosition(0.6);
+            telemetry.addData("Bumper open", true);
+            telemetry.update();
+        }
+        if (gamepad2.y || gamepad2.a) {
+            if (gamepad2.y);
+
+        }
+
+//archived arm code
 /*        if (gamepad2.a || gamepad2.b || gamepad2.x || gamepad2.y) {
             if (gamepad2.a)
                 armH = ground;

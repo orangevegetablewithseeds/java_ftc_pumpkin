@@ -12,26 +12,36 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @TeleOp (name ="SERVOOOOOOOO")
 public class testservo extends OpMode {
-    CRServo servo;
+    Servo servo;
 
     @Override
     public void init() { // runs at the beginning, init is short of "initialize"
         // hardwareMap belows to OpMode, so it doesn't need to be defined by the child
-        servo = hardwareMap.get(CRServo.class, "servo");
-//        clawMA1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        servo = hardwareMap.get(Servo.class, "servo");
+//        clawMA1.setMode(DcMotor.RunMode.RUN c                     _TO_POSITION);
     }
     @Override
     public void loop() {
+        telemetry.addData("servo position", servo.getPosition());
+
         if (gamepad1.left_bumper) {
-            servo.setPower(1);
+            servo.setPosition(0.8);
+            telemetry.addData("Bumper closed", true);
+            telemetry.update();
+
         }
-        else if (gamepad1.right_bumper) {
-            servo.setPower(-1);
-        }
-        else {
-            servo.setPower(0);
+        if (gamepad1.right_bumper) {
+            servo.setPosition(0.6);
+            telemetry.addData("Bumper open", true);
+            telemetry.update();
+
         }
     }
+
+//
+
 }
