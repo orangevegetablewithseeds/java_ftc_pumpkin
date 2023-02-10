@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp (name ="Drivable Manual Controls for Human Hand Use")
-public class Drive extends OpMode {
+@TeleOp (name ="New Drive")
+public class DriveNew extends OpMode {
 
     // the four motors are frontLeft, frontRight, backLeft, backRight
     private DcMotor frontLm1;
@@ -24,7 +24,7 @@ public class Drive extends OpMode {
     public static final double TICKS_PER_CENTIMETER = 537.7/11.2;
     public static final double CENTIMETERS_PER_TICK = 1/TICKS_PER_CENTIMETER;
 
-    public static final double MAX_LS_HEIGHT = 50;
+    public static final double MAX_LS_HEIGHT = 57  ;
 
     private ElapsedTime time;
 
@@ -104,31 +104,31 @@ public class Drive extends OpMode {
         telemetry.addData("linear slide left position (cm)", leftslide.getCurrentPosition() * CENTIMETERS_PER_TICK);
         telemetry.addData("linear slide right position (cm)", rightslide.getCurrentPosition() * CENTIMETERS_PER_TICK);
 
-            if (gamepad1.y) {
-                leftslide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                rightslide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                leftslide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightslide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            }
-            if (gamepad2.a && leftslide.getCurrentPosition() < MAX_LS_HEIGHT * TICKS_PER_CENTIMETER
-                    && rightslide.getCurrentPosition() < MAX_LS_HEIGHT * TICKS_PER_CENTIMETER) {
-                leftslide.setPower(0.7);
-                rightslide.setPower(0.7);
-            } else if (gamepad2.y && leftslide.getCurrentPosition() < MAX_LS_HEIGHT * TICKS_PER_CENTIMETER
-                    && rightslide.getCurrentPosition() < MAX_LS_HEIGHT * TICKS_PER_CENTIMETER) {
-                leftslide.setPower(-0.7);
-                rightslide.setPower(-0.7);
-            } else {
-                leftslide.setPower(0);
-                rightslide.setPower(0);
-            }
+        if (gamepad1.y) {
+            leftslide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightslide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            leftslide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightslide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        if (gamepad2.a && leftslide.getCurrentPosition() < MAX_LS_HEIGHT * TICKS_PER_CENTIMETER
+                && rightslide.getCurrentPosition() < MAX_LS_HEIGHT * TICKS_PER_CENTIMETER) {
+            leftslide.setPower(0.7);
+            rightslide.setPower(0.7);
+        } else if (gamepad2.y && leftslide.getCurrentPosition() < MAX_LS_HEIGHT * TICKS_PER_CENTIMETER
+                && rightslide.getCurrentPosition() < MAX_LS_HEIGHT * TICKS_PER_CENTIMETER) {
+            leftslide.setPower(-0.7);
+            rightslide.setPower(-0.7);
+        } else {
+            leftslide.setPower(0);
+            rightslide.setPower(0);
+        }
 
-//            if (gamepad2.dpad_left) {
-//                this.slidesToHeight(10, 0.7);
-//            }
-//            if (gamepad2.dpad_up) {
-//                this.slidesToHeight(19, 0.7);
-//            }
+        if (gamepad2.dpad_left) {
+            this.slidesToHeight(-28, 0.7);
+        }
+        if (gamepad2.dpad_up) {
+            this.slidesToHeight(-51, 0.7);
+        }
 
         leftarm.setPosition(leftarmpos);
         rightarm.setPosition(rightarmpos);
@@ -194,6 +194,13 @@ public class Drive extends OpMode {
 
             telemetry.addData("linear slide left position (cm)", leftslide.getCurrentPosition() * CENTIMETERS_PER_TICK);
             telemetry.addData("linear slide right position (cm)", rightslide.getCurrentPosition() * CENTIMETERS_PER_TICK);
+
+            telemetry.addData("left slide is busy", leftslide.isBusy());
+            telemetry.addData("right slide is busy", rightslide.isBusy());
+
+            telemetry.addData("left slide error", leftslide.getTargetPosition() - leftslide.getCurrentPosition());
+            telemetry.addData("right slide error", rightslide.getTargetPosition() - rightslide.getCurrentPosition());
+
             telemetry.update();
         }
 
@@ -214,7 +221,7 @@ public class Drive extends OpMode {
 
 
 
-        //if (gamepad1)
+//if (gamepad1)
 /*        if (gamepad2.y || gamepad2.a) {
             if (gamepad2.y);
             clawMA1.setTargetPosition((int) (armH * TICKS_PER_INCH_ARM));
@@ -270,7 +277,7 @@ public class Drive extends OpMode {
 
         }
 */
-        // below is old arm code
+// below is old arm code
 /*
         if (gamepad2.left_trigger >  0 && gamepad2.right_trigger > 0) {
             clawMA1.setPower(0);
@@ -288,7 +295,7 @@ public class Drive extends OpMode {
         }
 */
 
-        //Below is linear slide code
+//Below is linear slide code
         /*
         if (gamepad2.left_bumper == true) {
             clawML1.setPower(.8);
@@ -312,101 +319,3 @@ public class Drive extends OpMode {
                     clawS1.setPower(0);
                 }
         }*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

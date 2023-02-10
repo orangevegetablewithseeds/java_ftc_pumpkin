@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 /* This code can drive our robot, for our robot our front wheels are bevel geared and the back is direct connect
 Test out if it works with yours but you can change the pos or neg signs to change it so it can work for you.
  */
-@TeleOp (name ="Don't Run 1")
+//@TeleOp (name ="Don't Run 1")
 public class Wheels extends OpMode {
 
     // the four motors are frontLeft, frontRight, backLeft, backRight

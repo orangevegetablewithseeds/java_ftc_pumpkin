@@ -8,16 +8,17 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name ="Blue Polar Opposite of Direction Right Location Spawn")
 public class Left_Spawn extends LinearOpMode {
 
     // the four motors are frontLeft, frontRight, backLeft, backRight
-    DcMotor frontLm2;
-    DcMotor frontRm2;
-    DcMotor backLm2;
-    DcMotor backRm2;
+    DcMotorEx frontLm2;
+    DcMotorEx frontRm2;
+    DcMotorEx backLm2;
+    DcMotorEx backRm2;
     // Servo clawS2;
     /*
     DcMotor clawML2;
@@ -30,14 +31,20 @@ public class Left_Spawn extends LinearOpMode {
     double middle = 30 * scaleFactor;
     double high = 50 * scaleFactor;
     double ground = 0;
+    double driveInches;
+    HardwareMap hardwareMap;
+
+    final double TICKS_PER_ROTATION = 537.7;
+    final double WHEEL_DIAMETER = 3.85827;
+    final double TICKS_PER_INCH = TICKS_PER_ROTATION / (WHEEL_DIAMETER * Math.PI);
 
     @Override
     public void runOpMode() { //runs at the beginning, init is short of "initialize"
         // hardwareMap belows to OpMode, so it doesn't need to be defined by the child
-        frontLm2 = hardwareMap.get(DcMotor.class, "frontL"); //if it has a m its the motor variable
-        frontRm2 = hardwareMap.get(DcMotor.class, "frontR");
-        backLm2 = hardwareMap.get(DcMotor.class, "backL");
-        backRm2 = hardwareMap.get(DcMotor.class, "backR");
+        frontLm2 = hardwareMap.get(DcMotorEx.class, "frontL"); //if it has a m its the motor variable
+        frontRm2 = hardwareMap.get(DcMotorEx.class, "frontR");
+        backLm2 = hardwareMap.get(DcMotorEx.class, "backL");
+        backRm2 = hardwareMap.get(DcMotorEx.class, "backR");
         // clawS2 = hardwareMap.get(Servo.class,"clawS");
         /*
         clawML2 = hardwareMap.get(DcMotor.class,"clawML");
@@ -54,17 +61,20 @@ public class Left_Spawn extends LinearOpMode {
         clawMA2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); */
 
         waitForStart();
-        GoForward(12,0.5);
-        ForwardRight(10, 0.5);
+        GoForward(14 ,0.5);
+/*        ForwardRight(10, 0.5);
         GoForward(2,0.5);
         //put claw + lienar slide code here
         StopNow(5);
         GoBack(3,0.5);
         StopNow(3);
-        TurnLeft(15,0.5);
-        GoForward(8,0.5);
-
+        TurnLeft(10,0.5);
         StopNow(5);
+        GoForward(5,0.5);
+        StopNow(5);
+        GoBack(5,0.5);
+
+        StopNow(5);*/
         terminateOpModeNow();
     }
 
@@ -78,12 +88,11 @@ public class Left_Spawn extends LinearOpMode {
         sleep(time * 100);
     }
 
-    public void GoForward(long time, double power) {
-        frontLm2.setPower(power);
-        frontRm2.setPower(power);
-        backLm2.setPower(power);
-        backRm2.setPower(power);
-        sleep(time * 100);
+    public void GoForward(int ticks, double power) {
+        frontLm2.setTargetPosition(frontLm2.getCurrentPosition()-ticks);
+        frontRm2.setTargetPosition(frontRm2.getCurrentPosition()+ticks);
+        backLm2.setTargetPosition(backLm2.getCurrentPosition()-ticks);
+        backRm2.setTargetPosition(backRm2.getCurrentPosition()+ticks);
     }
 
     public void GoBack(long time, double power) {

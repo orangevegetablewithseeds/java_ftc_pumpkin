@@ -1,30 +1,13 @@
-/*
- * Copyright (c) 2021 OpenFTC Team
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
+package org.firstinspires.ftc.teamcode;
 
-package org.firstinspires.ftc.teamcode.Scanning;
-
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Scanning.AprilTagDetectionPipeline;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -32,9 +15,17 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@TeleOp (name = "Auto?")
-public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
-{
+@Autonomous(name ="KamTick")
+public class KamTick extends LinearOpMode {
+
+    DcMotor frontLm2;
+    DcMotor frontRm2;
+    DcMotor backLm2;
+    DcMotor backRm2;
+    Servo clawS;
+    Servo leftarm;
+    Servo rightarm;
+
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -60,8 +51,20 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
     AprilTagDetection tagOfInterest = null;
 
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() throws InterruptedException {
+        AutoDrive drive = new AutoDrive(hardwareMap);
+        frontLm2 = hardwareMap.get(DcMotor.class, "frontL");
+        frontRm2 = hardwareMap.get(DcMotor.class, "frontR");
+        backLm2 = hardwareMap.get(DcMotor.class, "backL");
+        backRm2 = hardwareMap.get(DcMotor.class, "backR");
+        clawS = hardwareMap.get(Servo.class,"clawS");
+        leftarm = hardwareMap.get(Servo.class,"leftarm");
+        rightarm = hardwareMap.get(Servo.class,"rightarm");
+
+
+        frontLm2.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLm2.setDirection(DcMotorSimple.Direction.REVERSE);
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -84,10 +87,13 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
 
         telemetry.setMsTransmissionInterval(50);
 
-        /*
-         * The INIT-loop:
-         * This REPLACES waitForStart!
-         */
+
+      //   * The INIT-loop:
+         clawS.setPosition(0.9);
+         leftarm.setPosition(0.3);
+         rightarm.setPosition(0.7);
+    //     * This REPLACES waitForStart!-----------------------------------------------
+
         while (!isStarted() && !isStopRequested())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
@@ -168,10 +174,16 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
         /* Actually do something useful */
 
         if(tagOfInterest == null || tagOfInterest.id == LEFT) {
-    } else if(tagOfInterest.id == MIDDLE) {
-        //trajectory
-    } else {
-        //trajectory
+            drive.forward(50, 0.69);
+            drive.right(14, 0.69);
+            terminateOpModeNow();
+        } else if(tagOfInterest.id == MIDDLE) {
+            drive.forward(43, 0.69);
+            terminateOpModeNow();
+        } else {
+            drive.forward(50,0.69);
+            drive.left(14, 0.69);
+            terminateOpModeNow();
         }
 
         /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
@@ -188,4 +200,91 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
+    public void GoForward(long time, double power) {
+        frontLm2.setPower(power);
+        frontRm2.setPower(power);
+        backLm2.setPower(power);
+        backRm2.setPower(power);
+        sleep(time * 100);
+    }
+    public void GoBack(long time, double power) {
+        frontLm2.setPower(-power);
+        frontRm2.setPower(-power);
+        backLm2.setPower(-power);
+        backRm2.setPower(-power);
+        sleep(time * 100);
+    }
+    public void GoLeft(long time, double power) {
+        frontLm2.setPower(-power);
+        frontRm2.setPower(power);
+        backLm2.setPower(power);
+        backRm2.setPower(-power);
+        sleep(time * 100);
+    }
+    public void GoRight(long time, double power) {
+        frontLm2.setPower(power);
+        frontRm2.setPower(-power);
+        backLm2.setPower(-power);
+        backRm2.setPower(power);
+        sleep(time * 100);
+    }
+    public void TopLeft(long time, double power) {
+        frontRm2.setPower(power);
+        backLm2.setPower(power);
+        sleep(time * 100);
+    }
+    public void BottomLeft(long time, double power) {
+        frontRm2.setPower(-power);
+        backLm2.setPower(-power);
+        sleep(time * 100);
+    }
+    public void TopRight(long time, double power) {
+        frontLm2.setPower(power);
+        backRm2.setPower(power);
+        sleep(time * 100);
+    }
+    public void BottomRight(long time, double power) {
+        frontLm2.setPower(-power);
+        backRm2.setPower(-power);
+        sleep(time * 100);
+    }
+    public void StopNow(long time) {
+        frontLm2.setPower(0);
+        frontRm2.setPower(0);
+        backLm2.setPower(0);
+        backRm2.setPower(0);
+        sleep(time * 100);
+    }
+    public void TurnLeft(long time, double power) {
+        frontLm2.setPower(-power);
+        frontRm2.setPower(power);
+        backLm2.setPower(-power);
+        backRm2.setPower(power);
+        sleep(time * 100);
+    }
+    public void TurnRight(long time, double power) {
+        frontLm2.setPower(power);
+        frontRm2.setPower(-power);
+        backLm2.setPower(power);
+        backRm2.setPower(-power);
+        sleep(time * 100);
+    }
+    /*
+    public void ClawOpen(long time, double power) {
+        clawS2.setPower(power);
+        sleep(time * 100);
+    }
+    public void ClawClose(long time, double power) {
+        clawS2.setPower(-power);
+        sleep(time * 100);
+    }
+    public void ArmUp(long time, double power) {
+        clawMA2.setPower(power);
+        sleep(time * 100);
+    }
+    public void ArmDown(long time, double power) {
+        clawMA2.setPower(-power);
+        sleep(time * 100);
+    }
+     */
 }

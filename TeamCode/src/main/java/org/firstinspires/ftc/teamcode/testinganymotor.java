@@ -25,11 +25,13 @@ public class testinganymotor extends OpMode {
     }
     @Override
     public void loop() {
+        telemetry.addData("current motor location", themotor.getCurrentPosition());
+
         if (gamepad1.left_bumper) {
-            themotor.setPower(1);
+            themotor.setPower(0.25);
         }
         else if (gamepad1.right_bumper) {
-            themotor.setPower(-1);
+            themotor.setPower(-0.25);
         }
         else {
             themotor.setPower(0);

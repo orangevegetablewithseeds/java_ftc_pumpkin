@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //This is an old claw code we made when we didn't have a claw or an arm to begin with(theoretical code)
-@TeleOp (name ="Don't Run 2")
+//@TeleOp (name ="Don't Run 2")
 public class Claw extends OpMode {
     CRServo clawS1;
     DcMotor clawML1;

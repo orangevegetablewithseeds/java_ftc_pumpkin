@@ -25,7 +25,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
 
-@Autonomous(name ="Don't Run 3")
+//@Autonomous(name ="Don't Run 3")
 public class Auto extends LinearOpMode {
 
     // the four motors are frontLeft, frontRight, backLeft, backRight
