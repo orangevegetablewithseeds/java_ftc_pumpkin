@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp (name ="Drivable Manual Controls for Human Hand Use")
-public class Drive extends OpMode {
+public class Drive<time1> extends OpMode {
 
     // the four motors are frontLeft, frontRight, backLeft, backRight
     private DcMotor frontLm1;
@@ -88,7 +88,7 @@ public class Drive extends OpMode {
         double y1 = Math.pow(-gamepad1.left_stick_y, 3);
         double l1 = Math.pow(gamepad1.right_stick_x, 3);
         double denominator = Math.max(Math.abs(x1) + Math.abs(l1) + Math.abs(y1), 1.0);
-
+     //   telemetry.addData("wheel velocity", (frontLm1.getCurrentPosition() * TICKS_PER_CENTIMETER)) / time.time(time1));
         if (gamepad1.left_trigger == 1) {
             frontLm1.setPower(((y1 + x1 + l1) / denominator) * .25);
             frontRm1.setPower(((y1 - x1 - l1) / denominator) * .25);
